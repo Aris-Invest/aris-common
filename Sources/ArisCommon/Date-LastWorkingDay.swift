@@ -1,5 +1,7 @@
 import Foundation
 
+let formatter = DateFormatter()
+
 public extension Date {
     /// If today is in the weekend, returns last working day, otherwise returns beginning of today.
     static var lastWorkingDay: Date {
@@ -14,20 +16,14 @@ public extension Date {
     }
     
     var apiFormatted: String {
-        let strategy = Date.ISO8601FormatStyle()
-            .year()
-            .day()
-            .month()
-            .dateSeparator(.dash)
-        
-        return self.formatted(strategy)
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: self)
     }
 }
 
 public extension String {
     /// Tries to onvert a string in the format yyyy-MM-dd to an actual date
     var asISO8601Date: Date? {
-        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.date(from: self)
     }
