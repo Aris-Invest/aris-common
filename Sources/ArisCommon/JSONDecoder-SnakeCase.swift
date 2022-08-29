@@ -1,9 +1,18 @@
 import Foundation
 
 public extension JSONDecoder {
-    static var snakeCaseDecoder: JSONDecoder {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
+    func keyStrategy(_ strategy: JSONDecoder.KeyDecodingStrategy) -> JSONDecoder {
+        keyDecodingStrategy = strategy
+        return self
+    }
+    
+    func dateStrategy(_ strategy: JSONDecoder.DateDecodingStrategy) -> JSONDecoder {
+        dateDecodingStrategy = strategy
+        return self
+    }
+    
+    func dataStrategy(_ strategy: JSONDecoder.DataDecodingStrategy) -> JSONDecoder {
+        dataDecodingStrategy = strategy
+        return self
     }
 }
