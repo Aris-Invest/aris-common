@@ -15,6 +15,35 @@ public extension Date {
         return date
     }
     
+    var dayBefore: Date? {
+        Calendar.current.date(byAdding: .day, value: -1, to: self)
+    }
+    
+    var dayAfter: Date? {
+        Calendar.current.date(byAdding: .day, value: 1, to: self)
+    }
+    
+    var noon: Date? {
+        Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)
+    }
+
+    /// If `self` is in the weekend, returns last Friday, otherwise returns now.
+    func lastMarketOpen(isMarketOpen: Bool) -> Date {
+        var date = self
+        
+        if !Calendar.current.isDateInWeekend(date) && !isMarketOpen {
+            date = date.dayBefore?.noon ?? date
+        }
+        
+        while Calendar.current.isDateInWeekend(date) {
+            guard let previousDay = Calendar.current.date(byAdding: .day, value: -1, to: date) else { break }
+            date = previousDay.noon ?? date
+        }
+        
+        return date
+    }
+    
+    
     var apiFormatted: String {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: self)
